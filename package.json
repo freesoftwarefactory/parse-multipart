@@ -1,0 +1,8 @@
+{
+  "name": "multipart",
+  "version": "1.0.0",
+  "description": "A javascript/nodejs multipart/form-data parser which operates on raw data.",
+  "main": "multipart.js",
+  "author": "Cristian Salazar (christiansalazarh@gmail.com)",
+  "license": "MIT"
+}
