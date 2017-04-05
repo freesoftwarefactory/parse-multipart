@@ -2,13 +2,17 @@
 
 A javascript/nodejs multipart/form-data parser which operates on raw data.
 
-## author
+# author
 
 Cristian Salazar. Email: christiansalazarh@gmail.com, Website: www.chileshift.cl,
 i live in Santiago de Chile. I am Amazon AWS developper focused in Serverless
 software development, i call it: the new age of software development.
 
-## Background
+# Help & Tutorial
+
+Please follow me on Twitter [@AmazonAwsVideos](https://twitter.com/amazonawsvideos) and keep informed about more Amazon Aws Videos. Watch my video on which i expose the necesary steps to [implement a Multiform/form-data parser inside a Amazon Aws ApiGateway](https://www.youtube.com/watch?v=BrYJlR0yRnw). You can [subscribe to my channel](https://www.youtube.com/c/ChristianSalazar).
+
+# Background
 
 Sometimes you only have access to the raw multipart payload and it needs to be
 parsed in order to extract the files or data contained on it. As an example: 
@@ -37,7 +41,7 @@ HTTP client via form submission containing two files. We need to extract the
 all files contained inside it. The multipart format allows you to send more 
 than one file in the same payload, that's why it is called: multipart.
 
-## Usage
+# Usage
 
 In the next lines you can see a implementation. In this case two key values
 needs to be present:
