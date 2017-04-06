@@ -81,6 +81,7 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 			lastline='';
 		}else
 		if(4 == state){
+			if(lastline.length > (boundary.length+4)) lastline=''; // mem save
 			if((("--"+boundary+"--") == lastline)){
 				var j = buffer.length - lastline.length;
 				var part = new Buffer(buffer.slice(0,j-1));
