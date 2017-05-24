@@ -53,11 +53,9 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 		var prevByte = i > 0 ? multipartBodyBuffer[i-1] : null;
 		var newLineDetected = ((oneByte == 0x0a) && (prevByte == 0x0d)) ? true : false;
 		var newLineChar = ((oneByte == 0x0a) || (oneByte == 0x0d)) ? true : false;
-		
+
 		if(!newLineChar)
 			lastline += String.fromCharCode(oneByte);
-		
-		//console.log('ST='+state,'LN='+lastline,'BF='+JSON.stringify(buffer));
 
 		if((0 == state) && newLineDetected){
 			if(("--"+boundary) == lastline){
@@ -82,16 +80,9 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 		}else
 		if(4 == state){
 			if(lastline.length > (boundary.length+4)) lastline=''; // mem save
-			if((("--"+boundary+"--") == lastline)){
+			if(((("--"+boundary) == lastline))){
 				var j = buffer.length - lastline.length;
-				var part = new Buffer(buffer.slice(0,j-1));
-				var p = { header : header , info : info , part : part  };
-				allParts.push(process(p));
-				break;
-			}else
-			if((("--"+boundary) == lastline)){
-				var j = buffer.length - lastline.length;
-				var part = new Buffer(buffer.slice(0,j-1));
+				var part = buffer.slice(0,j-1);
 				var p = { header : header , info : info , part : part  };
 				allParts.push(process(p));
 				buffer = []; lastline=''; state=5; header=''; info='';
@@ -127,20 +118,21 @@ exports.getBoundary = function(header){
 exports.DemoData = function(){
 	body = "trash1\r\n"
 	body += "------WebKitFormBoundaryvef1fLxmoUdYZWXp\r\n";
-	body += "header1\r\n";
-	body += "info1\r\n";
+	body += "Content-Disposition: form-data; name=\"uploads[]\"; filename=\"A.txt\"\r\n";
+	body += "Content-Type: text/plain\r\n",
 	body += "\r\n\r\n";
-	body += "111X";
+	body += "@11X";
 	body += "111Y\r\n";
-	body += "111Z\rCCCC\nCCCC\r\nCCCCCX\r\n";
+	body += "111Z\rCCCC\nCCCC\r\nCCCCC@\r\n\r\n";
 	body += "------WebKitFormBoundaryvef1fLxmoUdYZWXp\r\n";
-	body += "header2\r\n";
-	body += "info2\r\n";
+	body += "Content-Disposition: form-data; name=\"uploads[]\"; filename=\"B.txt\"\r\n";
+	body += "Content-Type: text/plain\r\n",
 	body += "\r\n\r\n";
-	body += "222X";
+	body += "@22X";
 	body += "222Y\r\n";
-	body += "222Z\r222W\n2220\r\n666X\r\n";
+	body += "222Z\r222W\n2220\r\n666@\r\n";
 	body += "------WebKitFormBoundaryvef1fLxmoUdYZWXp--\r\n";
-	return body;
+	return (new Buffer(body,'utf-8')); 
+	// returns a Buffered payload, so the it will be treated as a binary content.
 };
 
