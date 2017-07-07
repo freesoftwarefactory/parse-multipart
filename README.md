@@ -83,4 +83,15 @@ Now, having this two key values then you can implement it:
 The returned data is an array of parts, each one described by a filename,
 a type and a data, this last one is a Buffer (see also Node Buffer).
 
+# How to Test Locally
+
+A test.js file is provided in order to do a local testing, simply open
+a console and type:
+
+```
+cd /your/project/parse-multipart;
+# or: cd /your/project/node_modules/parse-multipart;
+node test # please read the comments at test.js
+```
+
 

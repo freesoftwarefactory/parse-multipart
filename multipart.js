@@ -33,14 +33,14 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 			{ value: b, writable: true, enumerable: true, configurable: true })
 			return o;
 		}
-		var header = part.header.split(';');		
-		var file = obj(header[2]);
-		var contentType = part.info.split(':')[1].trim();		
+		var header = part.header.split(';');
+        var file = obj(header[2] ? header[2] : 'filename=\"NOT_A_FILE\"');
+        var contentType = (part.info) ? (part.info.split(':')[1].trim()) : 'text/plain';
 		Object.defineProperty( file , 'type' , 
 			{ value: contentType, writable: true, enumerable: true, configurable: true })
 		Object.defineProperty( file , 'data' , 
 			{ value: new Buffer(part.part), writable: true, enumerable: true, configurable: true })
-		return file;
+        return file;
 	}
 	var prev = null;
 	var lastline='';
@@ -125,12 +125,16 @@ exports.DemoData = function(){
 	body += "111Y\r\n";
 	body += "111Z\rCCCC\nCCCC\r\nCCCCC@\r\n\r\n";
 	body += "------WebKitFormBoundaryvef1fLxmoUdYZWXp\r\n";
-	body += "Content-Disposition: form-data; name=\"uploads[]\"; filename=\"B.txt\"\r\n";
+	body += "Content-Disposition: form-data; name=\"testMessage\";\r\n";
+	body += "\r\n\r\n";
+	body += "test message 123456\r\n";
+	body += "------WebKitFormBoundaryvef1fLxmoUdYZWXp\r\n";
+	body += "Content-Disposition: form-data; name=\"uploads[]\"; filename=\"C.txt\"\r\n";
 	body += "Content-Type: text/plain\r\n",
 	body += "\r\n\r\n";
-	body += "@22X";
-	body += "222Y\r\n";
-	body += "222Z\r222W\n2220\r\n666@\r\n";
+	body += "@CCC";
+	body += "CCCY\r\n";
+	body += "CCCZ\rCCCW\nCCC0\r\n666@\r\n";
 	body += "------WebKitFormBoundaryvef1fLxmoUdYZWXp--\r\n";
 	return (new Buffer(body,'utf-8')); 
 	// returns a Buffered payload, so the it will be treated as a binary content.
