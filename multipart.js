@@ -58,7 +58,7 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 			lastline += String.fromCharCode(oneByte);
 
 		if((0 == state) && newLineDetected){
-			if(("--"+boundary) == lastline){
+			if(boundary == lastline){
 				state=1;
 			}
 			lastline='';
@@ -80,7 +80,7 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 		}else
 		if(4 == state){
 			if(lastline.length > (boundary.length+4)) lastline=''; // mem save
-			if(((("--"+boundary) == lastline))){
+			if(boundary == lastline){
 				var j = buffer.length - lastline.length;
 				var part = buffer.slice(0,j-1);
 				var p = { header : header , info : info , part : part  };
