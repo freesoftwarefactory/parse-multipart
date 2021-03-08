@@ -4,13 +4,13 @@ A javascript/nodejs multipart/form-data parser which operates on raw data.
 
 # author
 
-Cristian Salazar. Email: christiansalazarh@gmail.com, Website: www.chileshift.cl,
-i live in Santiago de Chile. I am Amazon AWS developper focused in Serverless
+Cristian Salazar. Email: christiansalazarh@gmail.com, Website: www.creativosdigitales.cl,
+i live in Viña del Mar (Chile, South America). I am Amazon AWS developper focused in Serverless
 software development, i call it: the new age of software development.
 
 # Help & Tutorial
 
-Please follow me on Twitter [@AmazonAwsVideos](https://twitter.com/amazonawsvideos) and keep informed about more Amazon Aws Videos. Watch my video on which i expose the necesary steps to [implement a Multiform/form-data parser inside a Amazon Aws ApiGateway](https://www.youtube.com/watch?v=BrYJlR0yRnw). You can [subscribe to my channel](https://www.youtube.com/c/ChristianSalazar).
+Watch my video on which i expose the necesary steps to [implement a Multiform/form-data parser inside a Amazon Aws ApiGateway](https://www.youtube.com/watch?v=BrYJlR0yRnw). You can [subscribe to my channel](https://www.youtube.com/c/ChristianSalazar).
 
 # Background
 
