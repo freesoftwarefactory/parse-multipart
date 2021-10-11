@@ -4,23 +4,35 @@ A javascript/nodejs multipart/form-data parser which operates on raw data.
 
 # author
 
-Cristian Salazar. Email: christiansalazarh@gmail.com, Website: www.creativosdigitales.cl,
-i live in Viña del Mar (Chile, South America). I am Amazon AWS developper focused in Serverless
-software development, i call it: the new age of software development.
+My name is Cristian Salazar (christiansalazarh@gmail.com) im from Viña del Mar (Chile, South America). 
 
-# Help & Tutorial
+I'm an Amazon AWS developper focused in Serverless software development, i call it: the new age of software development.
 
-Watch my video on which i expose the necesary steps to [implement a Multiform/form-data parser inside a Amazon Aws ApiGateway](https://www.youtube.com/watch?v=BrYJlR0yRnw). You can [subscribe to my channel](https://www.youtube.com/c/ChristianSalazar).
+# Video/Tutorial
+
+You can Watch my video on which i expose the necesary steps to [implement a Multiform/form-data parser inside a Amazon Aws ApiGateway](https://www.youtube.com/watch?v=BrYJlR0yRnw).
 
 # Background
 
-Sometimes you only have access to the raw multipart payload and it needs to be
-parsed in order to extract the files or data contained on it. As an example: 
-the Amazon AWS ApiGateway, which will operate as a facade between the http
-client and your component (the one written by you designed to extract the 
-uploaded files or data). 
+Sometimes you have a server listing for data arriving to it (example: the Amazon API Gateway in AWS), this is called a "endpoint". Some website or script may send data to this endpoint. It may contain files or text, a encoded video and so on. The data is packaged in a well know format called "multipart/form-data". This data must be parsed, you must know where the data is, how many data comes to you and other aspects. This component will help you on this. 
 
-The raw payload formatted as multipart/form-data will looks like this one:
+As an example, The Amazon AWS ApiGateway. It operates as a facade between the http/s client (as an exampe, the browser) and your component (your lambda function, an action script etc). The "component" is the one written by you designed to extract the uploaded files or the data contained on it and then perform operations with it (storage etc). 
+
+# What means "Multipart/form-data".
+
+The 'mutipart/form-data' is the raw data attached to a POST coming inside a Http request, it has a format and marks to let you now when it starts and when it ends, this marks are also used to separate each "part of the data" that means: the same POST may have different parts: text and/or files or video,sound etc. 
+
+First, i need to clarify this point: some people think that "multipart" means: "a POST comming several times to an endpoint" each part having a "new or the next part" of the whole data", this is wrong approach and may confuse you when trying to undestand this work. Please have it in mind. The data arrives as a whole package in the same POST, that is: if you send a file, the entire file is contained in the POST, it will have a initial mark and a finalization mark, the mark is also sent to you in the same post. In other words, The "multipart" means: in the same post you will find many parts of different data separated by a mark. It may be different files, or text, etc.
+
+The header in the multipart/form-data has fields, this let you know about what is coming to you, the next paragraph will explain this:
+
+# Data Fields
+
+It is important to mention that sometimes the raw data contains some fields (look at the example below this lines, "filename=.." etc). So you must deal with it and parse the "field=value;" token. Some persons wrote a very nice modifications to my code in order to handle this fields in a better approach than mine, you may find the solution here: https://github.com/freesoftwarefactory/parse-multipart/pull/7.
+
+# Raw data example received in an endpoint:
+
+The raw payload is formatted as a "multipart/form-data" will look like this one:
 
 ```
 ------WebKitFormBoundaryDtbT5UpPj83kllfw
@@ -36,10 +48,7 @@ hello how are you
 ------WebKitFormBoundaryDtbT5UpPj83kllfw--
 ```
 
-The lines above represents a raw multipart/form-data payload sent by some 
-HTTP client via form submission containing two files. We need to extract the 
-all files contained inside it. The multipart format allows you to send more 
-than one file in the same payload, that's why it is called: multipart.
+The lines above represents a raw multipart/form-data payload sent by some HTTP client via form submission containing two files. We need to extract the all files contained inside it. The multipart format allows you to send more than one file in the same payload, that's why it is called: multipart.
 
 # Usage
 
@@ -80,7 +89,4 @@ Now, having this two key values then you can implement it:
 	}
 ```
 
-The returned data is an array of parts, each one described by a filename,
-a type and a data, this last one is a Buffer (see also Node Buffer).
-
-
+The returned data is an array of parts, each one described by a filename, a type and a data, this last one is a Buffer (see also Node Buffer).
