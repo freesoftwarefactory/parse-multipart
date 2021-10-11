@@ -14,7 +14,7 @@ You can Watch my video on which i expose the necesary steps to [implement a Mult
 
 # Background
 
-Sometimes you have a server listing for data arriving to it (example: the Amazon API Gateway in AWS), this is called a "endpoint". Some website or script may send data to this endpoint. It may contain files or text, a encoded video and so on. The data is packaged in a well know format called "multipart/form-data". This data must be parsed, you must know where the data is, how many data comes to you and other aspects. This component will help you on this. 
+Sometimes you have a server listeing for data arriving to it (example: the Amazon API Gateway in AWS), this is called a "endpoint". Some website or script may send data to this endpoint. It may contain files or text, a encoded video and so on. The data is packaged in a well know format called "multipart/form-data". This data must be parsed, you must know where the data is, how many data comes to you and other aspects. This component will help you on this. 
 
 As an example, The Amazon AWS ApiGateway. It operates as a facade between the http/s client (as an exampe, the browser) and your component (your lambda function, an action script etc). The "component" is the one written by you designed to extract the uploaded files or the data contained on it and then perform operations with it (storage etc). 
 
