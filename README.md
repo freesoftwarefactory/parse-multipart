@@ -12,6 +12,10 @@ My name is Cristian Salazar (christiansalazarh@gmail.com) from Santiago Chile (S
 
 I'm an Amazon AWS developper focused in Serverless software development, i call it: the new age of software development.
 
+# im open to remote job
+
+please visit my profile on: [www.linkedin.com/in/cristian-salazar-h](www.linkedin.com/in/cristian-salazar-h)
+
 # Video/Tutorial
 
 You can Watch my video on which i expose the necesary steps to [implement a Multiform/form-data parser inside a Amazon Aws ApiGateway](https://www.youtube.com/watch?v=BrYJlR0yRnw).
