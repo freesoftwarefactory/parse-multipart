@@ -2,9 +2,13 @@
 
 A javascript/nodejs multipart/form-data parser which operates on raw data.
 
+# note
+
+this code is not abandoned. i just keep it as its minimum as possible.
+
 # author
 
-My name is Cristian Salazar (christiansalazarh@gmail.com) im from Viña del Mar (Chile, South America). 
+My name is Cristian Salazar (christiansalazarh@gmail.com) from Santiago Chile (South America). 
 
 I'm an Amazon AWS developper focused in Serverless software development, i call it: the new age of software development.
 
