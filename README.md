@@ -12,9 +12,9 @@ My name is Cristian Salazar (christiansalazarh@gmail.com) from Santiago Chile (S
 
 I'm an Amazon AWS developper focused in Serverless software development, i call it: the new age of software development.
 
-im open to remote job:
+*im open to remote job:*
 
-please visit my profile on: [https://www.linkedin.com/in/cristian-salazar-h](www.linkedin.com/in/cristian-salazar-h)
+please visit my profile on: [https://www.linkedin.com/in/cristian-salazar-h](https://www.linkedin.com/in/cristian-salazar-h)
 
 # Video/Tutorial
 
