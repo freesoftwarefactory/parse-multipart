@@ -11,7 +11,7 @@
 	var parts = multipart.Parse(body,boundary);
 	
 	// each part is:
-	// { filename: 'A.txt', type: 'text/plain', data: <Buffer 41 41 41 41 42 42 42 42> }
+	// [ 'userfile': { filename: 'A.txt', name:'userfile', type: 'text/plain', data: <Buffer 41 41 41 41 42 42 42 42> } ]
 
 	author:  Cristian Salazar (christiansalazarh@gmail.com) www.chileshift.cl
 			 Twitter: @AmazonAwsChile
@@ -19,33 +19,58 @@
 exports.Parse = function(multipartBodyBuffer,boundary){
 	var process = function(part){
 		// will transform this object:
-		// { header: 'Content-Disposition: form-data; name="uploads[]"; filename="A.txt"',
-		//	 info: 'Content-Type: text/plain',
+		// { headers: [
+		//		'Content-Disposition: form-data; name="uploads[]"; filename="A.txt"',
+		//		'Content-Type: text/plain'
+		//	 ]
 		//	 part: 'AAAABBBB' }
-		// into this one:
-		// { filename: 'A.txt', type: 'text/plain', data: <Buffer 41 41 41 41 42 42 42 42> }
-		var obj = function(str){
-			var k = str.split('=');
-			var a = k[0].trim();
-			var b = JSON.parse(k[1].trim());
-			var o = {};
-			Object.defineProperty( o , a , 
-			{ value: b, writable: true, enumerable: true, configurable: true })
-			return o;
+		// into this one: ( Assumed the return value? )
+		// { filename: 'A.txt', name: 'userfile', type: 'text/plain', data: <Buffer 41 41 41 41 42 42 42 42> }
+		let file = {
+			data: new Buffer(part.part),
+			name: null,
+		};
+		
+		//Content-Disposition: form-data; name="uploads[]"; filename="A.txt"
+		// Process our headers
+		for (let header of part.headers) {
+			if (header == '') continue;
+			let ex = header.split(":");
+			
+			switch (ex[0].toLowerCase()) {
+				case 'content-type':
+					file.type = ex[1].trim();
+					break;
+				case 'content-id':
+					file.id = ex[1].trim();
+					break;
+				case 'content-disposition':
+					ex.splice(0,1); // Remove the header field name.
+					for (let param of ex[0].split(" ")) {
+						// Trim the ; if its there.
+						if (param.substr(-1) == ";") {
+							param = param.substr(0,param.length-1);
+						}
+						let pex = param.split("=");
+						if (pex[0].toLowerCase() == "name") {
+							pex.splice(0,1);
+							file.name = pex.join("=").trim().replace(/"/g,'');
+						} else if (pex[0].toLowerCase() == "filename") {
+							pex.splice(0,1);
+							file.filename = pex.join("=").trim().replace(/"/g,'');
+						}
+					}
+					break;
+			}
 		}
-		var header = part.header.split(';');		
-		var file = obj(header[2]);
-		var contentType = part.info.split(':')[1].trim();		
-		Object.defineProperty( file , 'type' , 
-			{ value: contentType, writable: true, enumerable: true, configurable: true })
-		Object.defineProperty( file , 'data' , 
-			{ value: new Buffer(part.part), writable: true, enumerable: true, configurable: true })
+		
 		return file;
 	}
+	
 	var prev = null;
 	var lastline='';
-	var header = '';
-	var info = ''; var state=0; var buffer=[];
+	var headers = [];
+	var state=0; var buffer=[];
 	var allParts = [];
 
 	for(i=0;i<multipartBodyBuffer.length;i++){
@@ -64,12 +89,12 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 			lastline='';
 		}else
 		if((1 == state) && newLineDetected){
-			header = lastline;
+			headers.push(lastline.trim());
 			state=2;
 			lastline='';
 		}else
 		if((2 == state) && newLineDetected){
-			info = lastline;
+			headers.push(lastline.trim());
 			state=3;
 			lastline='';
 		}else
@@ -83,7 +108,7 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 			if(((("--"+boundary) == lastline))){
 				var j = buffer.length - lastline.length;
 				var part = buffer.slice(0,j-1);
-				var p = { header : header , info : info , part : part  };
+				var p = { headers: headers, part: part  };
 				allParts.push(process(p));
 				buffer = []; lastline=''; state=5; header=''; info='';
 			}else{
@@ -96,13 +121,26 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 				state=1;
 		}
 	}
-	return allParts;
+	
+	let parts = {};
+	for (let part of allParts) {
+		if (!parts[part.name]) {
+			parts[part.name] = part;
+		} else {
+			parts[part.name] = [ parts[part.name] ];
+			parts[part.name].push(part);
+		}
+	}
+	
+	return parts;
 };
 
 //  read the boundary from the content-type header sent by the http client
 //  this value may be similar to:
 //  'multipart/form-data; boundary=----WebKitFormBoundaryvm5A9tzU1ONaGP5B',
 exports.getBoundary = function(header){
+	// Just incase someone just wants to throw the headers our way.
+	if (header['content-type']) header = header['content-type'];
 	var items = header.split(';');
 	if(items)
 		for(i=0;i<items.length;i++){

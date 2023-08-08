@@ -89,11 +89,13 @@ Now, having this two key values then you can implement it:
 	var boundary = "----WebKitFormBoundaryDtbT5UpPj83kllfw";
 	var parts = multipart.Parse(body,boundary);
 	
-	for(var i=0;i<parts.length;i++){
+	for(let part of parts){
 		var part = parts[i];
 		// will be:
-		// { filename: 'A.txt', type: 'text/plain', 
+		// { name: 'userfile', filename: 'A.txt', type: 'text/plain', 
 		//		data: <Buffer 41 41 41 41 42 42 42 42> }
+		// In the event of multiple files with the same "name" attribute, a part will be an array of files. Such as during a multi file upload.
+		// If no filename is supplied it will be ignored, if no name is supplied it will be null
 	}
 ```
 
