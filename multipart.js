@@ -26,16 +26,16 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 		// { filename: 'A.txt', type: 'text/plain', data: <Buffer 41 41 41 41 42 42 42 42> }
 		var obj = function(str){
 			var k = str.split('=');
-			var a = k[0].trim();
-			var b = JSON.parse(k[1].trim());
+			var a = k[0]?.trim() || '';
+			var b = JSON.parse(k[1]?.trim() || '{}');
 			var o = {};
 			Object.defineProperty( o , a , 
 			{ value: b, writable: true, enumerable: true, configurable: true })
 			return o;
 		}
-		var header = part.header.split(';');		
+		var header = part.header.split(';');
 		var file = obj(header[2]);
-		var contentType = part.info.split(':')[1].trim();		
+		var contentType = part.info.split(':')[1]?.trim() || '';
 		Object.defineProperty( file , 'type' , 
 			{ value: contentType, writable: true, enumerable: true, configurable: true })
 		Object.defineProperty( file , 'data' , 
@@ -64,7 +64,7 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 			lastline='';
 		}else
 		if((1 == state) && newLineDetected){
-			header = lastline;
+			header = lastline + ';;';
 			state=2;
 			lastline='';
 		}else
@@ -85,7 +85,7 @@ exports.Parse = function(multipartBodyBuffer,boundary){
 				var part = buffer.slice(0,j-1);
 				var p = { header : header , info : info , part : part  };
 				allParts.push(process(p));
-				buffer = []; lastline=''; state=5; header=''; info='';
+				buffer = []; lastline=''; state=5; header=';;'; info='';
 			}else{
 				buffer.push(oneByte);
 			}
@@ -135,4 +135,3 @@ exports.DemoData = function(){
 	return (new Buffer(body,'utf-8')); 
 	// returns a Buffered payload, so the it will be treated as a binary content.
 };
-
