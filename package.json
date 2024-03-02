@@ -1,24 +1,43 @@
 {
   "name": "parse-multipart",
-  "version": "1.0.0004",
+  "version": "1.0.1",
   "description": "A javascript/nodejs multipart/form-data parser which operates on raw data.",
-  "main": "multipart.js",
-  "author": "Cristian Salazar (christiansalazarh@gmail.com)",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "author": "Cristian Salazar <christiansalazarh@gmail.com>",
+  "contributors": [
+    "Cameron Hunter <hello@cameronhunter.co.uk>"
+  ],
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest",
+    "format": "prettier --write .",
+    "prepublishOnly": "npm run build"
   },
+  "files": [
+    "build"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/freesoftwarefactory/parse-multipart.git"
   },
   "keywords": [
     "multipart/form-data",
+    "multipart/mixed",
     "form",
     "fileuploader"
   ],
   "bugs": {
     "url": "https://github.com/freesoftwarefactory/parse-multipart/issues"
   },
-  "homepage": "https://github.com/freesoftwarefactory/parse-multipart#readme"
+  "homepage": "https://github.com/freesoftwarefactory/parse-multipart#readme",
+  "devDependencies": {
+    "@tsconfig/node-lts": "^20.1.1",
+    "@tsconfig/strictest": "^2.0.3",
+    "@types/node": "^18.19.21",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3",
+    "vitest": "^1.3.1"
+  }
 }
